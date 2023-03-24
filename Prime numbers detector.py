@@ -1,5 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox
+import seaborn as sns
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 def is_prime(a):
     if a < 2:
@@ -15,6 +18,21 @@ def set_prime():
     primes = [i for i in range(A, B + 1) if is_prime(i)]
     result = f"Ilość liczb pierwszych wynosi: {len(primes)}\nTe liczby pierwsze to:\n{', '.join(map(str, primes))}"
     messagebox.showinfo("Wynik", result)
+
+    # Dodajemy wykres rozrzutu
+    plot_primes(primes)
+
+def plot_primes(primes):
+    fig = plt.figure()
+    sns.scatterplot(x=range(len(primes)), y=primes)
+    plt.title("Rozkład liczb pierwszych")
+    plt.xlabel("Indeks")
+    plt.ylabel("Wartość liczby pierwszej")
+    
+    # Integracja z tkinter
+    canvas = FigureCanvasTkAgg(fig, master=root)
+    canvas.draw()
+    canvas.get_tk_widget().grid(row=4, columnspan=2, padx=5, pady=5)
 
 root = tk.Tk()
 root.title("Liczydło liczb pierwszych")
